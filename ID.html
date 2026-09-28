@@ -2,36 +2,408 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>2me Mirror · MIT Lizenz © iki1uc</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ANDOCKSTATION · 2me · iki1uc</title>
 <style>
-body{background:#000;color:#0f0;font-family:monospace;padding:20px;}
-pre{background:#111;padding:12px;border:1px solid #333;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#000;color:#c8d8e8;
+    font-family:'Consolas','Courier New',monospace;font-size:13px;overflow:hidden}
+
+  #dock{display:grid;grid-template-rows:32px 1fr 24px;height:100%}
+
+  #top{background:#1a0a2a;color:#b388ff;display:flex;align-items:center;
+    padding:0 14px;font-size:11px;letter-spacing:2px;gap:14px;
+    border-bottom:1px solid #3a1a5a}
+  #top b{color:#f0d080}
+  #top .right{margin-left:auto;display:flex;gap:14px;font-size:10px;color:#8878a8}
+
+  #main{display:grid;grid-template-columns:240px 1fr 260px;
+    gap:2px;background:#000;overflow:hidden;min-height:0}
+
+  .col{background:#0a0a12;display:flex;flex-direction:column;
+    overflow:hidden;min-height:0}
+  .col h2{background:#0c1828;color:#5cf0ff;font-size:11px;padding:4px 10px;
+    letter-spacing:1px;font-weight:normal;flex-shrink:0;
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid #1a2a3a}
+  .col h2 b{color:#f0d080}
+
+  .body{flex:1;overflow:auto;padding:10px;font-size:12px;line-height:1.6}
+  .body::-webkit-scrollbar{width:6px}
+  .body::-webkit-scrollbar-thumb{background:#2a3a4a}
+
+  /* ID-Blöcke */
+  .id-block{background:#0a0a12;border-left:2px solid #b388ff;
+    padding:8px 10px;margin-bottom:6px;font-size:11px}
+  .id-block .k{color:#8878a8;font-size:9.5px;letter-spacing:1px}
+  .id-block .v{color:#b388ff;font-weight:bold;font-size:12px}
+  .id-block .d{color:#6a7a8a;font-size:10px;margin-top:2px;line-height:1.45}
+
+  /* Andock-Ports */
+  .port{display:flex;align-items:center;gap:8px;padding:6px 8px;
+    background:#0a0a12;border:1px solid #1a2a3a;border-radius:4px;
+    margin-bottom:4px;cursor:pointer;transition:.15s;font-size:11px}
+  .port:hover{border-color:#5cf0ff;background:#0c1828}
+  .port .led{width:8px;height:8px;border-radius:50%;
+    background:#333;box-shadow:0 0 6px #333;flex-shrink:0}
+  .port.on .led{background:#0f0;box-shadow:0 0 10px #0f0}
+  .port .nm{flex:1;color:#c8d8e8}
+  .port .st{color:#5a7288;font-size:9.5px}
+  .port.on .st{color:#0f0}
+
+  /* Canvas */
+  #stage{position:relative;background:#000;display:flex;
+    align-items:center;justify-content:center;overflow:hidden}
+  #canvas{display:block}
+  .stage-info{position:absolute;top:12px;left:14px;
+    font-size:10px;color:#5a4a6a;letter-spacing:2px}
+  .stage-info b{color:#f0d080}
+  .stage-legend{position:absolute;bottom:12px;left:14px;
+    font-size:9.5px;color:#4a3a5a;display:flex;gap:14px}
+  .stage-legend span b{color:#b388ff}
+
+  /* Rechts: Status */
+  .panel{padding:8px;background:#0a0a12;border-top:1px solid #1a2a3a}
+  .panel:first-child{border-top:none}
+  .row{display:flex;justify-content:space-between;padding:3px 0;
+    border-bottom:1px dashed #1a2a3a;font-size:10.5px}
+  .row:last-child{border-bottom:none}
+  .row .k{color:#5a7288}
+  .row .v{color:#f0d080;font-weight:bold}
+  .row .v.ok{color:#0f0}
+
+  /* Log */
+  .log-line{padding:2px 0;font-size:10.5px;display:flex;gap:6px;
+    word-break:break-word}
+  .log-line .t{color:#4a3a5a;flex-shrink:0}
+  .log-line .m{flex:1}
+  .log-line.ok .m{color:#0f0}
+  .log-line.warn .m{color:#f0d080}
+  .log-line.err .m{color:#f55}
+  .log-line.info .m{color:#b388ff}
+
+  #bottom{background:#1a0a2a;color:#8878a8;font-size:10.5px;
+    padding:0 14px;display:flex;align-items:center;gap:16px;
+    border-top:1px solid #3a1a5a}
+  #bottom b{color:#f0d080}
 </style>
 </head>
 <body>
 
-<h1>2me – System Identität</h1>
+<div id="dock">
+  <div id="top">
+    <span>◈ <b>ANDOCKSTATION</b> · 2me · iki1uc</span>
+    <span class="right">
+      <span>ID <b>2me</b></span>
+      <span>MODE <b>RAW</b></span>
+      <span>PORTS <b id="topPorts">0/3</b></span>
+      <span id="clock">--:--:--</span>
+    </span>
+  </div>
 
-<pre>
-ID: 2me
-CORE: iki1uc
-VERSION: 1.0
-MODE: RAW
+  <div id="main">
+    <!-- LINKS: ID + Ports -->
+    <div class="col">
+      <h2><span>◈ IDENTITÄT</span><b>2me</b></h2>
+      <div class="body">
+        <div class="id-block">
+          <div class="k">ID</div><div class="v">2me</div>
+        </div>
+        <div class="id-block">
+          <div class="k">CORE</div><div class="v">iki1uc</div>
+        </div>
+        <div class="id-block">
+          <div class="k">VERSION</div><div class="v">1.0</div>
+        </div>
+        <div class="id-block">
+          <div class="k">MODE</div><div class="v">RAW</div>
+        </div>
+        <div class="id-block" style="border-left-color:#f0d080">
+          <div class="k">MIRROR-ROOT</div>
+          <div class="v" style="color:#f0d080">PX-TRIO</div>
+          <div class="d">PX3 + PX6 + PX9</div>
+        </div>
+        <div class="id-block" style="border-left-color:#f0d080">
+          <div class="k">FUSION</div>
+          <div class="v" style="color:#f0d080">PX12</div>
+        </div>
+        <div class="id-block" style="border-left-color:#f0d080">
+          <div class="k">ACHSE</div>
+          <div class="v" style="color:#f0d080">PX4</div>
+        </div>
+        <div class="id-block" style="border-left-color:#5cf0ff">
+          <div class="k">SYS-x</div><div class="v" style="color:#5cf0ff">System-Kreuzung</div>
+        </div>
+        <div class="id-block" style="border-left-color:#5cf0ff">
+          <div class="k">SYS</div><div class="v" style="color:#5cf0ff">System-Root</div>
+        </div>
+        <div class="id-block" style="border-left-color:#5cf0ff">
+          <div class="k">TEM</div><div class="v" style="color:#5cf0ff">Zeit-Root</div>
+        </div>
+        <div class="id-block" style="border-left-color:#5cf0ff">
+          <div class="k">UI</div><div class="v" style="color:#5cf0ff">Scanner-Root</div>
+        </div>
+        <div class="id-block" style="border-left-color:#5cf0ff">
+          <div class="k">GEO</div><div class="v" style="color:#5cf0ff">O12 / Φ4 / XU / TΩ</div>
+        </div>
+      </div>
 
-# MIRROR-ROOT
-PX-TRIO = PX3 + PX6 + PX9
-PX-FUSION = PX12
-PX-ACHSE = PX4
+      <h2 style="background:#0c1828;color:#5cf0ff;font-size:11px;
+        padding:4px 10px;letter-spacing:1px;font-weight:normal;
+        border-top:1px solid #1a2a3a;border-bottom:1px solid #1a2a3a">
+        <span>◈ ANDOCK-PORTS</span><b id="portCount">0/3</b>
+      </h2>
+      <div class="body" id="ports" style="flex:0 0 auto;max-height:180px"></div>
+    </div>
 
-SYS-x = System-Kreuzung
-SYS   = System-Root
-TEM   = Zeit-Root
-UI    = Scanner-Root
-GEO   = O12 / Φ4 / XU / TΩ
+    <!-- MITTE: Canvas -->
+    <div id="stage">
+      <canvas id="canvas" width="700" height="600"></canvas>
+      <div class="stage-info">
+        ANDOCK · <b id="stageMode">verbunden</b> · <span id="stageCount">0 ports</span>
+      </div>
+      <div class="stage-legend">
+        <span>◉ 2me</span>
+        <span><b>PX-TRIO</b> 3·6·9</span>
+        <span>◎ PX12</span>
+        <span>↺ Loop</span>
+      </div>
+    </div>
 
-STATUS: Aktiv
-SIGNAL: Verbindung hergestellt
-</pre>
+    <!-- RECHTS: Status + Log -->
+    <div class="col">
+      <h2><span>◈ STATUS</span><b id="sysState">aktiv</b></h2>
+      <div class="panel">
+        <div class="row"><span class="k">ID</span><span class="v ok">2me</span></div>
+        <div class="row"><span class="k">CORE</span><span class="v ok">iki1uc</span></div>
+        <div class="row"><span class="k">MODE</span><span class="v">RAW</span></div>
+        <div class="row"><span class="k">SIGNAL</span><span class="v ok" id="sSignal">verbunden</span></div>
+      </div>
 
+      <div class="panel">
+        <div class="row"><span class="k">PX-TRIO</span><span class="v">3+6+9</span></div>
+        <div class="row"><span class="k">PX-FUSION</span><span class="v">12</span></div>
+        <div class="row"><span class="k">PX-ACHSE</span><span class="v">4</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="row"><span class="k">SYS-x</span><span class="v">aktiv</span></div>
+        <div class="row"><span class="k">TEM</span><span class="v">aktiv</span></div>
+        <div class="row"><span class="k">UI</span><span class="v">aktiv</span></div>
+        <div class="row"><span class="k">GEO</span><span class="v">O12·Φ4·XU·TΩ</span></div>
+      </div>
+
+      <h2 style="background:#0c1828;color:#5cf0ff;font-size:11px;
+        padding:4px 10px;letter-spacing:1px;font-weight:normal;
+        border-top:1px solid #1a2a3a;border-bottom:1px solid #1a2a3a;
+        display:flex;justify-content:space-between">
+        <span>◈ LOG</span><b id="logCount" style="color:#f0d080">0</b>
+      </h2>
+      <div class="body" id="log" style="flex:1"></div>
+    </div>
+  </div>
+
+  <div id="bottom">
+    <span>◈ ANDOCKSTATION · 2me · iki1uc</span>
+    <span><b>PX-TRIO</b> · PX3 + PX6 + PX9 → PX12</span>
+    <span style="margin-left:auto">© iki1uc</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════
+   ANDOCKSTATION · 2me · iki1uc
+   Vereinheitlichung: ID + uROOM + HDF
+   ═══════════════════════════════════════════════════════════ */
+
+const S = {
+  ports: {
+    id:     { on: true,  label: "ID.html",    desc: "Identität · 2me",          href: "ID.html" },
+    uroom:  { on: false, label: "uROOM",      desc: "5 Räume · 8 Engines",      href: "uROOM.html" },
+    hdf:    { on: false, label: "HDF",         desc: "81-Matrix · Resolver",     href: "HDF.html" }
+  },
+  tick: 0,
+  logs: []
+};
+
+/* ─── LOG ────────────────────────────────────────────────── */
+function log(msg, cls = "") {
+  const el = document.getElementById("log");
+  const t = new Date().toLocaleTimeString("de-DE");
+  const div = document.createElement("div");
+  div.className = "log-line " + cls;
+  div.innerHTML = `<span class="t">${t}</span><span class="m">${msg}</span>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  while (el.children.length > 200) el.removeChild(el.firstChild);
+  S.logs.push({ t, msg, cls });
+  document.getElementById("logCount").textContent = S.logs.length;
+}
+
+/* ─── PORTS ──────────────────────────────────────────────── */
+function buildPorts() {
+  const el = document.getElementById("ports");
+  el.innerHTML = "";
+  for (const [key, p] of Object.entries(S.ports)) {
+    const d = document.createElement("div");
+    d.className = "port" + (p.on ? " on" : "");
+    d.dataset.key = key;
+    d.innerHTML = `
+      <span class="led"></span>
+      <span class="nm">${p.label}</span>
+      <span class="st">${p.on ? "verbunden" : "getrennt"}</span>`;
+    d.onclick = () => togglePort(key);
+    el.appendChild(d);
+  }
+  updatePortCount();
+}
+
+function togglePort(key) {
+  const p = S.ports[key];
+  p.on = !p.on;
+  document.querySelectorAll(".port").forEach(el => {
+    const k = el.dataset.key;
+    el.classList.toggle("on", S.ports[k].on);
+    el.querySelector(".st").textContent = S.ports[k].on ? "verbunden" : "getrennt";
+  });
+  updatePortCount();
+  log(`◈ ${p.label} ${p.on ? "verbunden" : "getrennt"}`, p.on ? "ok" : "warn");
+  renderScene();
+}
+
+function updatePortCount() {
+  const n = Object.values(S.ports).filter(p => p.on).length;
+  document.getElementById("topPorts").textContent = n + "/3";
+  document.getElementById("portCount").textContent = n + "/3";
+  document.getElementById("stageCount").textContent = n + " ports";
+}
+
+/* ─── CANVAS ─────────────────────────────────────────────── */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let W, H;
+
+function resize() {
+  const stage = document.getElementById("stage");
+  const r = stage.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = r.width; H = r.height;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener("resize", () => { resize(); });
+
+function renderScene() {
+  const t = S.tick;
+  const cx = W / 2, cy = H / 2;
+  const activePorts = Object.values(S.ports).filter(p => p.on).length;
+
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  // Sternenstaub
+  for (let i = 0; i < 40; i++) {
+    const x = (i * 137) % W;
+    const y = (i * 91) % H;
+    const a = 0.04 + Math.sin(t * 0.02 + i) * 0.03;
+    ctx.fillStyle = `rgba(179,136,255,${a})`;
+    ctx.fillRect(x, y, 1, 1);
+  }
+
+  // PX-TRIO: drei Ringe
+  const R0 = Math.min(W, H) * 0.3;
+  const rings = [
+    { r: R0 * 0.4, c: "#f0d080", label: "3", on: activePorts >= 1 },
+    { r: R0 * 0.7, c: "#b388ff", label: "6", on: activePorts >= 2 },
+    { r: R0, c: "#5cf0ff", label: "9", on: activePorts >= 3 }
+  ];
+
+  rings.forEach((ring, i) => {
+    ctx.strokeStyle = ring.on
+      ? ring.c
+      : `rgba(90,114,136,0.3)`;
+    ctx.lineWidth = ring.on ? 2 : 0.5;
+    ctx.beginPath();
+    ctx.arc(cx, cy, ring.r + Math.sin(t * 0.03 + i) * 4, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Label
+    ctx.fillStyle = ring.on ? ring.c : "#3a4a5a";
+    ctx.font = "bold 14px monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(ring.label, cx + ring.r + 12, cy);
+  });
+
+  // Zentrum: 2me
+  const pulse = 0.6 + Math.sin(t * 0.06) * 0.4;
+  ctx.fillStyle = `rgba(240,208,128,${pulse})`;
+  ctx.shadowColor = "#f0d080";
+  ctx.shadowBlur = 20 * pulse;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 10 + Math.sin(t * 0.08) * 3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = "#f0d080";
+  ctx.font = "bold 16px monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("2me", cx, cy - 25);
+
+  // PX-FUSION text
+  if (activePorts === 3) {
+    ctx.fillStyle = "rgba(240,208,128,0.8)";
+    ctx.font = "12px monospace";
+    ctx.fillText("PX12 · FUSION", cx, cy + 35);
+  }
+
+  // Linien zwischen Ringen (wenn verbunden)
+  if (activePorts >= 2) {
+    ctx.strokeStyle = "rgba(179,136,255,0.4)";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath();
+    ctx.arc(cx, cy, R0 * 0.55, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  S.tick++;
+  requestAnimationFrame(renderScene);
+}
+
+/* ─── CLOCK ──────────────────────────────────────────────── */
+setInterval(() => {
+  document.getElementById("clock").textContent =
+    new Date().toLocaleTimeString("de-DE");
+}, 1000);
+
+/* ─── INIT ───────────────────────────────────────────────── */
+resize();
+buildPorts();
+log("◈ ANDOCKSTATION geladen", "ok");
+log("  ID · 2me · CORE · iki1uc", "info");
+log("  PX-TRIO · PX3 + PX6 + PX9 → PX12", "info");
+log("  PORTS · ID · uROOM · HDF", "info");
+log("© iki1uc", "");
+log("  klick ports zum verbinden", "warn");
+
+renderScene();
+
+/* Public API */
+window.ANDOCK = {
+  ports: S.ports,
+  toggle: togglePort,
+  state: () => ({
+    ports: Object.entries(S.ports).map(([k, v]) => ({ key: k, on: v.on })),
+    connected: Object.values(S.ports).filter(p => p.on).length
+  })
+};
+</script>
 </body>
 </html>
