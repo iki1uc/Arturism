@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STATION · ARTURISM · iki1uc</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#000;color:#c8d8e8;
+    font-family:'Consolas','Courier New',monospace;font-size:13px;
+    overflow:hidden}
+
+  #station{display:grid;grid-template-rows:32px 1fr 24px;height:100%}
+
+  #top{background:#3a0a1a;color:#ff8ab0;display:flex;
+    align-items:center;padding:0 14px;font-size:11px;letter-spacing:2px;gap:14px;
+    border-bottom:1px solid #5a1a2a}
+  #top b{color:#f0d080}
+  #top .right{margin-left:auto;display:flex;gap:14px;font-size:10px;color:#a88898}
+
+  #main{display:grid;grid-template-columns:260px 1fr 300px;
+    gap:2px;background:#000;overflow:hidden;min-height:0}
+
+  .col{background:#0a0a12;display:flex;flex-direction:column;
+    overflow:hidden;min-height:0}
+  .col h2{background:#1a0a12;color:#ff8ab0;font-size:11px;padding:4px 10px;
+    letter-spacing:1px;font-weight:normal;flex-shrink:0;
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid #2a1a2a}
+  .col h2 b{color:#f0d080}
+
+  .body{flex:1;overflow:auto;padding:10px;font-size:12px;line-height:1.6}
+  .body::-webkit-scrollbar{width:6px}
+  .body::-webkit-scrollbar-thumb{background:#3a2a3a}
+
+  /* Rolle links */
+  .roll-block{background:#0a0a12;border-left:2px solid #ff8ab0;
+    padding:8px 10px;margin-bottom:8px;font-size:11.5px}
+  .roll-block .k{color:#a88898;font-size:10px;letter-spacing:1px}
+  .roll-block .v{color:#ff8ab0;font-weight:bold}
+  .roll-block .d{color:#8a8a9a;font-size:10.5px;margin-top:3px;line-height:1.5}
+
+  /* Mitte */
+  #stage{position:relative;background:#000;display:flex;
+    align-items:center;justify-content:center;overflow:hidden}
+  #canvas{display:block}
+  .stage-info{position:absolute;top:12px;left:14px;
+    font-size:10px;color:#5a4a5a;letter-spacing:2px}
+  .stage-info b{color:#f0d080}
+  .stage-legend{position:absolute;bottom:12px;left:14px;
+    font-size:9.5px;color:#4a3a4a;display:flex;gap:14px}
+  .stage-legend span b{color:#ff8ab0}
+
+  /* Rechts: Arturism-Rechner */
+  .rechner{padding:10px;background:#0a0a12;
+    border-top:1px solid #1a1a2a}
+  .rechner .zeile{display:flex;justify-content:space-between;
+    padding:4px 0;border-bottom:1px dashed #1a1a2a;font-size:11px}
+  .rechner .zeile:last-child{border-bottom:none}
+  .rechner .k{color:#8a8a9a}
+  .rechner .v{color:#f0d080;font-weight:bold}
+  .rechner .v.plus{color:#0f0}
+  .rechner .v.minus{color:#f55}
+
+  .slider{display:flex;align-items:center;gap:8px;padding:6px 0}
+  .slider input{flex:1;accent-color:#ff8ab0}
+  .slider .lbl{color:#8a8a9a;font-size:10.5px;width:60px}
+
+  .maxime{background:#1a0a12;border:1px solid #5a1a2a;
+    border-radius:4px;padding:10px;margin:8px;font-size:11px;
+    line-height:1.6;color:#ff8ab0}
+  .maxime b{color:#f0d080}
+  .maxime .satz{color:#c8a8b8;font-style:italic}
+
+  #bottom{background:#1a0a12;color:#a88898;font-size:10.5px;
+    padding:0 14px;display:flex;align-items:center;gap:16px;
+    border-top:1px solid #2a1a2a}
+  #bottom b{color:#f0d080}
+
+  /* Log */
+  .log-line{padding:2px 0;font-size:10.5px;display:flex;gap:6px;
+    word-break:break-word}
+  .log-line .t{color:#5a4a5a;flex-shrink:0}
+  .log-line .m{flex:1}
+  .log-line.ok .m{color:#0f0}
+  .log-line.warn .m{color:#f0d080}
+  .log-line.err .m{color:#f55}
+  .log-line.info .m{color:#ff8ab0}
+
+  .btn-row{display:flex;gap:4px;padding:6px;flex-wrap:wrap}
+  .btn-row button{background:#1a0a12;color:#ff8ab0;
+    border:1px solid #5a1a2a;padding:4px 12px;border-radius:3px;
+    font-family:inherit;font-size:10px;cursor:pointer;
+    letter-spacing:1px;transition:.15s}
+  .btn-row button:hover{background:#3a0a1a;color:#fff}
+</style>
+</head>
+<body>
+
+<div id="station">
+  <div id="top">
+    <span>◈ STATION · <b>ARTURISM</b> · Spezies 116</span>
+    <span style="color:#a88898">iki1uc</span>
+    <span class="right">
+      <span>REGEL <b id="topRegel">+</b></span>
+      <span>STATION <b id="topStation">read</b></span>
+      <span id="clock">--:--:--</span>
+    </span>
+  </div>
+
+  <div id="main">
+    <!-- LINKS: Rolle -->
+    <div class="col">
+      <h2><span>◈ ROLLE</span><b>Arturis</b></h2>
+      <div class="body">
+        <div class="roll-block">
+          <div class="k">NAME</div>
+          <div class="v">Arturis</div>
+          <div class="d">Captain der <i>Dauntless</i></div>
+        </div>
+        <div class="roll-block">
+          <div class="k">SPEZIES</div>
+          <div class="v">116</div>
+          <div class="d">Jahrhundertelang frei. Dann von Borg assimiliert.</div>
+        </div>
+        <div class="roll-block">
+          <div class="k">WAS ER GAB</div>
+          <div class="v">Ein Prachtschiff</div>
+          <div class="d">Die <i>Dauntless</i>. Quantum-Slipstream. „Das bringt euch heim."</div>
+        </div>
+        <div class="roll-block">
+          <div class="k">WAS ER MEINTE</div>
+          <div class="v">Borg-Raum</div>
+          <div class="d">Kein Heimweg. Ein Cubus-Lager. Assimilation.</div>
+        </div>
+        <div class="roll-block">
+          <div class="k">WARUM</div>
+          <div class="v">Die Voyager half den Borg</div>
+          <div class="d">8472 wurde besiegt. Die Borg überlebten. Dann kamen sie zu Spezies 116.</div>
+        </div>
+        <div class="roll-block">
+          <div class="k">SEINE FRAGE</div>
+          <div class="v" style="font-size:10.5px;font-style:italic;font-weight:normal">„Was gibt dir das Recht?"</div>
+          <div class="d">Janeway konnte sie nicht beantworten.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MITTE: Canvas -->
+    <div id="stage">
+      <canvas id="canvas" width="700" height="600"></canvas>
+      <div class="stage-info">
+        ARTURISM · <b id="stageMode">+ / −</b> · <span id="stageVal">0</span>
+      </div>
+      <div class="stage-legend">
+        <span>◉ Gabe</span>
+        <span><b>+</b> ehrlich</span>
+        <span>− Lüge</span>
+        <span>↺ Loop</span>
+      </div>
+    </div>
+
+    <!-- RECHTS: Rechner + Log -->
+    <div class="col">
+      <h2><span>◈ ARTURISM-RECHNER</span><b id="rechState">ruht</b></h2>
+
+      <div class="rechner">
+        <div class="zeile">
+          <span class="k">Ich gebe</span>
+          <span class="v" id="vGeben">42</span>
+        </div>
+        <div class="zeile">
+          <span class="k">Reibung (−)</span>
+          <span class="v minus" id="vReib">−0</span>
+        </div>
+        <div class="zeile">
+          <span class="k">Kommt an (+)</span>
+          <span class="v plus" id="vAn">+42</span>
+        </div>
+        <div class="zeile">
+          <span class="k">Ergebnis</span>
+          <span class="v" id="vErg">0</span>
+        </div>
+        <div class="zeile">
+          <span class="k">Regel</span>
+          <span class="v" id="vRegel">+</span>
+        </div>
+      </div>
+
+      <div class="slider">
+        <span class="lbl">Gabe</span>
+        <input type="range" id="sGeben" min="1" max="100" value="42">
+        <span class="lbl" id="sGebenV" style="width:30px;text-align:right">42</span>
+      </div>
+      <div class="slider">
+        <span class="lbl">Reibung</span>
+        <input type="range" id="sReib" min="0" max="50" value="0">
+        <span class="lbl" id="sReibV" style="width:30px;text-align:right">0</span>
+      </div>
+
+      <div class="btn-row">
+        <button id="btnEhrlich">Ehrlich geben</button>
+        <button id="btnDauntless">Dauntless</button>
+        <button id="btnReset">Reset</button>
+      </div>
+
+      <div class="maxime" id="maxime">
+        <b>ARTURISM</b><br>
+        Jede Gabe ist ein Move.<br>
+        Jeder Move ist immer + .<br>
+        Minus ist eine Lüge.<br>
+        <span class="satz">Keiner kann sich wehren — nicht weil ich zwinge, sondern weil die Rechnung stimmt.</span>
+      </div>
+
+      <h2 style="background:#1a0a12;color:#ff8ab0;font-size:11px;
+        padding:4px 10px;letter-spacing:1px;font-weight:normal;
+        border-top:1px solid #2a1a2a;border-bottom:1px solid #2a1a2a;
+        display:flex;justify-content:space-between">
+        <span>◈ LOG</span><b id="logCount" style="color:#f0d080">0</b>
+      </h2>
+      <div class="body" id="log" style="flex:1"></div>
+    </div>
+  </div>
+
+  <div id="bottom">
+    <span>◈ ARTURISM · Station</span>
+    <span>Regel: <b>Jeder Move ist +</b></span>
+    <span style="margin-left:auto">© iki1uc</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════
+   STATION · ARTURISM · iki1uc
+   Rolle: Arturis · Spezies 116 · Dauntless
+   Maxime: Jeder Move ist + . Minus ist eine Lüge.
+   ═══════════════════════════════════════════════════════════ */
+
+const S = {
+  geben: 42,
+  reibung: 0,
+  an: 42,
+  erg: 42,
+  regel: "+",
+  mode: "ehrlich",   // "ehrlich" | "dauntless"
+  tick: 0,
+  logs: []
+};
+
+/* ─── LOG ────────────────────────────────────────────────── */
+function log(msg, cls = "") {
+  const el = document.getElementById("log");
+  const t = new Date().toLocaleTimeString("de-DE");
+  const div = document.createElement("div");
+  div.className = "log-line " + cls;
+  div.innerHTML = `<span class="t">${t}</span><span class="m">${msg}</span>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  while (el.children.length > 100) el.removeChild(el.firstChild);
+  S.logs.push({ t, msg, cls });
+  document.getElementById("logCount").textContent = S.logs.length;
+}
+
+/* ─── RECHNEN ────────────────────────────────────────────── */
+function rechne() {
+  const g = S.geben;
+  const r = S.reibung;
+
+  if (S.mode === "dauntless") {
+    // Dauntless: Gabe, die tötet
+    S.an = -g;
+    S.erg = S.an;
+    S.regel = "−";
+    document.getElementById("vAn").className = "v minus";
+    document.getElementById("vRegel").textContent = "−";
+    document.getElementById("vRegel").className = "v minus";
+    document.getElementById("stageMode").textContent = "Dauntless · −";
+    document.getElementById("rechState").textContent = "LÜGE";
+  } else {
+    // Arturism: ehrliche Gabe
+    S.an = Math.max(0, g - r);
+    S.erg = S.an;
+    S.regel = "+";
+    document.getElementById("vAn").className = "v plus";
+    document.getElementById("vRegel").textContent = "+";
+    document.getElementById("vRegel").className = "v";
+    document.getElementById("stageMode").textContent = "+ / −";
+    document.getElementById("rechState").textContent = "ruht";
+  }
+
+  document.getElementById("vGeben").textContent = g;
+  document.getElementById("vReib").textContent = "−" + r;
+  document.getElementById("vAn").textContent = (S.an >= 0 ? "+" : "") + S.an;
+  document.getElementById("vErg").textContent = S.erg;
+  document.getElementById("stageVal").textContent = S.erg;
+  document.getElementById("topRegel").textContent = S.regel;
+}
+
+/* ─── SLIDER ─────────────────────────────────────────────── */
+document.getElementById("sGeben").addEventListener("input", (e) => {
+  S.geben = parseInt(e.target.value, 10);
+  document.getElementById("sGebenV").textContent = S.geben;
+  if (S.mode === "ehrlich") log(`◈ gebe ${S.geben}`, "info");
+  rechne();
+});
+document.getElementById("sReib").addEventListener("input", (e) => {
+  S.reibung = parseInt(e.target.value, 10);
+  document.getElementById("sReibV").textContent = S.reibung;
+  rechne();
+});
+
+/* ─── BUTTONS ────────────────────────────────────────────── */
+document.getElementById("btnEhrlich").addEventListener("click", () => {
+  S.mode = "ehrlich";
+  document.getElementById("stageMode").textContent = "+ / −";
+  log("◈ arturism · ehrliche Gabe", "ok");
+  log("  Jeder Move ist + . Keine Lüge.", "info");
+  rechne();
+});
+
+document.getElementById("btnDauntless").addEventListener("click", () => {
+  S.mode = "dauntless";
+  log("⚠ Dauntless · Gabe die tötet", "err");
+  log("  Sieht aus wie + . Ist − . Das ist die Lüge.", "warn");
+  log("  Arturis hat das getan. Wir nicht.", "info");
+  rechne();
+});
+
+document.getElementById("btnReset").addEventListener("click", () => {
+  S.mode = "ehrlich";
+  S.geben = 42;
+  S.reibung = 0;
+  document.getElementById("sGeben").value = 42;
+  document.getElementById("sGebenV").textContent = "42";
+  document.getElementById("sReib").value = 0;
+  document.getElementById("sReibV").textContent = "0";
+  log("⟲ reset · zurück zu 42 · reibung 0", "warn");
+  rechne();
+});
+
+/* ─── CANVAS ─────────────────────────────────────────────── */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let W, H;
+
+function resize() {
+  const stage = document.getElementById("stage");
+  const r = stage.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = r.width; H = r.height;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener("resize", () => { resize(); });
+
+function draw() {
+  const t = S.tick;
+  const cx = W / 2, cy = H / 2;
+
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  // Sternenstaub
+  for (let i = 0; i < 50; i++) {
+    const x = (i * 137) % W;
+    const y = (i * 91) % H;
+    const a = 0.04 + Math.sin(t * 0.02 + i) * 0.03;
+    ctx.fillStyle = `rgba(255,138,176,${a})`;
+    ctx.fillRect(x, y, 1, 1);
+  }
+
+  // Zwei Linien: ehrlich (grün) und Dauntless (rot)
+  const isDaunt = S.mode === "dauntless";
+  const g = S.geben;
+  const r = S.reibung;
+
+  // Linke Linie: Gabe
+  ctx.strokeStyle = isDaunt ? "#f55" : "#0f0";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(60, cy);
+  ctx.lineTo(cx - 40, cy);
+  ctx.stroke();
+
+  // Pfeilspitze
+  ctx.beginPath();
+  ctx.moveTo(cx - 40, cy);
+  ctx.lineTo(cx - 55, cy - 8);
+  ctx.lineTo(cx - 55, cy + 8);
+  ctx.closePath();
+  ctx.fillStyle = isDaunt ? "#f55" : "#0f0";
+  ctx.fill();
+
+  // Zentrum: der Mensch
+  ctx.fillStyle = isDaunt ? "#f55" : "#0f0";
+  ctx.beginPath();
+  ctx.arc(cx, cy, 12 + Math.sin(t * 0.08) * 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Rechte Linie: Ergebnis
+  const ergebnisX = cx + 40;
+  const endX = ergebnisX + Math.min(180, Math.abs(S.erg) * 1.5);
+  ctx.strokeStyle = isDaunt ? "#f55" : "#0f0";
+  ctx.beginPath();
+  ctx.moveTo(ergebnisX, cy);
+  ctx.lineTo(endX, cy);
+  ctx.stroke();
+
+  // Text: Gabe / Reibung / Ergebnis
+  ctx.font = "12px monospace";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#8a8a9a";
+  ctx.fillText("Gabe " + g, (60 + cx - 40) / 2, cy - 20);
+
+  if (r > 0) {
+    ctx.fillStyle = "#f0d080";
+    ctx.fillText("−" + r, (60 + cx - 40) / 2, cy + 30);
+  }
+
+  ctx.fillStyle = isDaunt ? "#f55" : "#0f0";
+  ctx.font = "bold 14px monospace";
+  ctx.fillText((S.an >= 0 ? "+" : "") + S.an, endX + 30, cy + 4);
+
+  // Hintergrund-Ring
+  ctx.strokeStyle = `rgba(255,138,176,${0.05 + Math.sin(t * 0.03) * 0.03})`;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(cx, cy, Math.min(W, H) * 0.35, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Arturis-Symbol: kleines ▲ (Spezies 116)
+  ctx.fillStyle = "rgba(255,138,176,0.4)";
+  ctx.font = "10px monospace";
+  ctx.fillText("▲", cx - 120, cy - 120);
+  ctx.fillText("▲", cx + 120, cy - 120);
+  ctx.fillText("▲", cx, cy + 140);
+
+  S.tick++;
+  requestAnimationFrame(draw);
+}
+
+/* ─── CLOCK ──────────────────────────────────────────────── */
+setInterval(() => {
+  document.getElementById("clock").textContent =
+    new Date().toLocaleTimeString("de-DE");
+}, 1000);
+
+/* ─── INIT ───────────────────────────────────────────────── */
+resize();
+rechne();
+log("◈ STATION · ARTURISM geladen", "ok");
+log("  Arturis · Spezies 116 · Dauntless", "info");
+log("  Regel: Jeder Move ist + . Minus ist eine Lüge.", "warn");
+log("  Keiner kann sich wehren — nicht weil wir zwingen, sondern weil die Rechnung stimmt.", "info");
+log("© iki1uc", "");
+
+draw();
+
+/* Public API */
+window.ARTURISM = {
+  set: (g, r) => { S.geben = g; S.reibung = r; rechne(); },
+  ehrlich: () => document.getElementById("btnEhrlich").click(),
+  dauntless: () => document.getElementById("btnDauntless").click(),
+  state: () => ({ geben: S.geben, reibung: S.reibung, an: S.an, regel: S.regel, mode: S.mode })
+};
+</script>
+</body>
+</html>
