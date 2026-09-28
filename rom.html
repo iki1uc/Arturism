@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROM · WERT-PRÜFSTAND · iki1uc</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#000;color:#c8d8e8;
+    font-family:'Consolas','Courier New',monospace;font-size:13px;overflow:hidden}
+
+  #rom{display:grid;grid-template-rows:32px 1fr 24px;height:100%}
+
+  #top{background:#1a0a2a;color:#b388ff;display:flex;align-items:center;
+    padding:0 14px;font-size:11px;letter-spacing:2px;gap:14px;
+    border-bottom:1px solid #3a1a5a}
+  #top b{color:#f0d080}
+  #top .right{margin-left:auto;display:flex;gap:14px;font-size:10px;color:#8878a8}
+
+  #main{display:grid;grid-template-columns:280px 1fr 300px;
+    gap:2px;background:#000;overflow:hidden;min-height:0}
+
+  .col{background:#0a0a12;display:flex;flex-direction:column;
+    overflow:hidden;min-height:0}
+  .col h2{background:#0c1828;color:#5cf0ff;font-size:11px;padding:4px 10px;
+    letter-spacing:1px;font-weight:normal;flex-shrink:0;
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid #1a2a3a}
+  .col h2 b{color:#f0d080}
+
+  .body{flex:1;overflow:auto;padding:10px;font-size:12px;line-height:1.6}
+  .body::-webkit-scrollbar{width:6px}
+  .body::-webkit-scrollbar-thumb{background:#2a3a4a}
+
+  /* Linke Spalte: Messwerte */
+  .meter{background:#0a0a12;border-left:2px solid #5cf0ff;
+    padding:8px 10px;margin-bottom:6px;font-size:11px}
+  .meter .k{color:#8878a8;font-size:9.5px;letter-spacing:1px}
+  .meter .v{color:#5cf0ff;font-weight:bold;font-size:14px;display:block;margin-top:2px}
+  .meter .v.cpu{color:#ff8a2a}
+  .meter .v.gpu{color:#ff3ea5}
+  .meter .v.ram{color:#39ff88}
+  .meter .v.rom{color:#f0d080}
+  .meter .bar{height:4px;background:#1a2a3a;border-radius:2px;overflow:hidden;margin-top:4px}
+  .meter .bar i{display:block;height:100%;transition:width .3s}
+
+  /* Mitte: Canvas */
+  #stage{position:relative;background:#000;display:flex;
+    align-items:center;justify-content:center;overflow:hidden}
+  #canvas{display:block}
+  .stage-info{position:absolute;top:12px;left:14px;
+    font-size:10px;color:#5a4a6a;letter-spacing:2px}
+  .stage-info b{color:#f0d080}
+  .stage-legend{position:absolute;bottom:12px;left:14px;
+    font-size:9.5px;color:#4a3a5a;display:flex;gap:14px}
+  .stage-legend span b{color:#b388ff}
+
+  /* Rechts: Wert + 3fach */
+  .panel{padding:10px;background:#0a0a12;border-top:1px solid #1a2a3a}
+  .panel:first-child{border-top:none}
+  .row{display:flex;justify-content:space-between;padding:3px 0;
+    border-bottom:1px dashed #1a2a3a;font-size:11px}
+  .row:last-child{border-bottom:none}
+  .row .k{color:#5a7288}
+  .row .v{color:#f0d080;font-weight:bold}
+  .row .v.ok{color:#0f0}
+  .row .v.warn{color:#f0d080}
+  .row .v.err{color:#f55}
+
+  .confirm-box{display:flex;gap:4px;padding:6px}
+  .confirm{flex:1;padding:6px 2px;text-align:center;font-size:9px;
+    background:#0a0a12;border:1px solid #1a2a3a;border-radius:3px;
+    cursor:pointer;transition:.15s}
+  .confirm:hover{border-color:#5cf0ff}
+  .confirm.on{background:#1a3a2a;border-color:#0f0;color:#0f0;
+    box-shadow:0 0 8px rgba(0,255,0,.3)}
+  .confirm .n{font-size:14px;font-weight:bold;display:block}
+  .confirm.on .n{color:#0f0}
+
+  .btn-row{display:flex;gap:4px;padding:6px;flex-wrap:wrap}
+  .btn-row button{background:#0a0a12;color:#5cf0ff;
+    border:1px solid #1a2a3a;padding:5px 12px;border-radius:3px;
+    font-family:inherit;font-size:10px;cursor:pointer;
+    letter-spacing:1px;transition:.15s;flex:1}
+  .btn-row button:hover{border-color:#5cf0ff;background:#0c1828}
+  .btn-row button.primary{border-color:#f0d080;color:#f0d080}
+  .btn-row button.primary:hover{background:#1a1208}
+
+  #bottom{background:#1a0a2a;color:#8878a8;font-size:10.5px;
+    padding:0 14px;display:flex;align-items:center;gap:16px;
+    border-top:1px solid #3a1a5a}
+  #bottom b{color:#f0d080}
+
+  .log-line{padding:2px 0;font-size:10.5px;display:flex;gap:6px;
+    word-break:break-word}
+  .log-line .t{color:#4a3a5a;flex-shrink:0}
+  .log-line .m{flex:1}
+  .log-line.ok .m{color:#0f0}
+  .log-line.warn .m{color:#f0d080}
+  .log-line.err .m{color:#f55}
+  .log-line.info .m{color:#b388ff}
+</style>
+</head>
+<body>
+
+<div id="rom">
+  <div id="top">
+    <span>◈ <b>ROM</b> · WERT-PRÜFSTAND</span>
+    <span class="right">
+      <span>CPU <b id="topCpu">—</b></span>
+      <span>RAM <b id="topRam">—</b></span>
+      <span>GPU <b id="topGpu">—</b></span>
+      <span>ROM <b id="topRom">—</b></span>
+      <span id="clock">--:--:--</span>
+    </span>
+  </div>
+
+  <div id="main">
+    <!-- LINKS: Messwerte -->
+    <div class="col">
+      <h2><span>◈ MESSWERTE</span><b id="messState">bereit</b></h2>
+      <div class="body">
+        <div class="meter">
+          <div class="k">CPU · RECHNET</div>
+          <div class="v cpu" id="vCpu">0</div>
+          <div class="bar"><i id="bCpu" style="width:0%;background:#ff8a2a"></i></div>
+        </div>
+        <div class="meter">
+          <div class="k">RAM · HÄLT</div>
+          <div class="v ram" id="vRam">0</div>
+          <div class="bar"><i id="bRam" style="width:0%;background:#39ff88"></i></div>
+        </div>
+        <div class="meter">
+          <div class="k">GPU · ZEIGT</div>
+          <div class="v gpu" id="vGpu">0</div>
+          <div class="bar"><i id="bGpu" style="width:0%;background:#ff3ea5"></i></div>
+        </div>
+        <div class="meter">
+          <div class="k">ROM · BLEIBT</div>
+          <div class="v rom" id="vRom">0</div>
+          <div class="bar"><i id="bRom" style="width:0%;background:#f0d080"></i></div>
+        </div>
+        <div class="meter" style="border-left-color:#b388ff">
+          <div class="k">DURCHSATZ (80%)</div>
+          <div class="v" style="color:#b388ff" id="vDurchsatz">0</div>
+        </div>
+        <div class="meter" style="border-left-color:#ff5a7a">
+          <div class="k">RESERVE (20%)</div>
+          <div class="v" style="color:#ff5a7a" id="vReserve">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MITTE: Canvas -->
+    <div id="stage">
+      <canvas id="canvas" width="700" height="600"></canvas>
+      <div class="stage-info">
+        ROM · <b id="stageWert">0</b> · <span id="stageStatus">wartend</span>
+      </div>
+      <div class="stage-legend">
+        <span>◉ CPU</span>
+        <span><b>RAM</b></span>
+        <span>GPU</span>
+        <span>ROM</span>
+      </div>
+    </div>
+
+    <!-- RECHTS: Wert + 3fach -->
+    <div class="col">
+      <h2><span>◈ ROM-WERT</span><b id="romState">—</b></h2>
+      <div class="panel">
+        <div class="row"><span class="k">CPU</span><span class="v cpu" id="rCpu">0</span></div>
+        <div class="row"><span class="k">RAM</span><span class="v ram" id="rRam">0</span></div>
+        <div class="row"><span class="k">GPU</span><span class="v gpu" id="rGpu">0</span></div>
+        <div class="row"><span class="k">ROM</span><span class="v rom" id="rRom">0</span></div>
+        <div class="row"><span class="k">GESAMT</span><span class="v" id="rTotal">0</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="row"><span class="k">DURCHSATZ</span><span class="v" id="rDurchsatz">0</span></div>
+        <div class="row"><span class="k">RESERVE</span><span class="v err" id="rReserve">0</span></div>
+        <div class="row"><span class="k">WERT</span><span class="v ok" id="rWert">0</span></div>
+      </div>
+
+      <h2 style="background:#0c1828;color:#5cf0ff;font-size:11px;
+        padding:4px 10px;letter-spacing:1px;font-weight:normal;
+        border-top:1px solid #1a2a3a;border-bottom:1px solid #1a2a3a">
+        <span>◈ 3FACH-EINVERSTÄNDNIS</span><b id="confirmCount">0/3</b>
+      </h2>
+      <div class="confirm-box" id="confirmBox"></div>
+
+      <div class="btn-row">
+        <button class="primary" id="btnBench">▶ BENCH</button>
+        <button id="btnReset">⟲ RESET</button>
+      </div>
+
+      <h2 style="background:#0c1828;color:#5cf0ff;font-size:11px;
+        padding:4px 10px;letter-spacing:1px;font-weight:normal;
+        border-top:1px solid #1a2a3a;border-bottom:1px solid #1a2a3a;
+        display:flex;justify-content:space-between">
+        <span>◈ LOG</span><b id="logCount" style="color:#f0d080">0</b>
+      </h2>
+      <div class="body" id="log" style="flex:1"></div>
+    </div>
+  </div>
+
+  <div id="bottom">
+    <span>◈ ROM · WERT-PRÜFSTAND</span>
+    <span>Nur was <b>wirklich</b> ankommt, zählt.</span>
+    <span style="margin-left:auto">© iki1uc</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════
+   ROM · WERT-PRÜFSTAND · iki1uc
+   Misst CPU, RAM, GPU, ROM. Rechnet Durchsatz (80%) + Reserve (20%).
+   ═══════════════════════════════════════════════════════════ */
+
+const S = {
+  cpu: 0, ram: 0, gpu: 0, rom: 0,
+  durchsatz: 0, reserve: 0, wert: 0,
+  confirm: [false, false, false],
+  tick: 0,
+  logs: []
+};
+
+/* ─── LOG ────────────────────────────────────────────────── */
+function log(msg, cls = "") {
+  const el = document.getElementById("log");
+  const t = new Date().toLocaleTimeString("de-DE");
+  const div = document.createElement("div");
+  div.className = "log-line " + cls;
+  div.innerHTML = `<span class="t">${t}</span><span class="m">${msg}</span>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  while (el.children.length > 200) el.removeChild(el.firstChild);
+  S.logs.push({ t, msg, cls });
+  document.getElementById("logCount").textContent = S.logs.length;
+}
+
+/* ─── BENCH ──────────────────────────────────────────────── */
+function bench() {
+  log("◈ bench startet …", "info");
+  document.getElementById("messState").textContent = "läuft";
+
+  // CPU: Primzahlen zählen
+  const t0 = performance.now();
+  let primes = 0;
+  for (let i = 2; i < 50000; i++) {
+    let p = true;
+    for (let j = 2; j * j <= i; j++) if (i % j === 0) { p = false; break; }
+    if (p) primes++;
+  }
+  const cpuTime = performance.now() - t0;
+  S.cpu = Math.min(100, Math.round(50000 / (cpuTime + 1) * 2));
+
+  // RAM: Objekt allozieren
+  const t1 = performance.now();
+  const arr = new Array(100000).fill(0).map((_, i) => i * 2);
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) sum += arr[i];
+  const ramTime = performance.now() - t1;
+  S.ram = Math.min(100, Math.round(100000 / (ramTime + 1)));
+
+  // GPU: Canvas-Operationen
+  const t2 = performance.now();
+  const off = document.createElement("canvas");
+  off.width = 256; off.height = 256;
+  const octx = off.getContext("2d");
+  for (let i = 0; i < 500; i++) {
+    octx.fillStyle = `hsl(${i % 360},80%,50%)`;
+    octx.fillRect(i % 256, (i * 7) % 256, 8, 8);
+  }
+  const gpuTime = performance.now() - t2;
+  S.gpu = Math.min(100, Math.round(500 / (gpuTime + 0.5)));
+
+  // ROM: Was bleibt nach dem Bench
+  S.rom = Math.round((S.cpu + S.ram + S.gpu) / 3);
+
+  // Durchsatz + Reserve
+  S.durchsatz = Math.round((S.cpu + S.ram + S.gpu + S.rom) * 0.8);
+  S.reserve = Math.round((S.cpu + S.ram + S.gpu + S.rom) * 0.2);
+  S.wert = S.durchsatz;
+
+  updateUI();
+  log(`✓ cpu=${S.cpu} · ram=${S.ram} · gpu=${S.gpu} · rom=${S.rom}`, "ok");
+  log(`  durchsatz=${S.durchsatz} · reserve=${S.reserve} · wert=${S.wert}`, "info");
+  document.getElementById("messState").textContent = "fertig";
+}
+
+/* ─── UI ─────────────────────────────────────────────────── */
+function updateUI() {
+  document.getElementById("vCpu").textContent = S.cpu;
+  document.getElementById("vRam").textContent = S.ram;
+  document.getElementById("vGpu").textContent = S.gpu;
+  document.getElementById("vRom").textContent = S.rom;
+  document.getElementById("vDurchsatz").textContent = S.durchsatz;
+  document.getElementById("vReserve").textContent = S.reserve;
+
+  document.getElementById("bCpu").style.width = S.cpu + "%";
+  document.getElementById("bRam").style.width = S.ram + "%";
+  document.getElementById("bGpu").style.width = S.gpu + "%";
+  document.getElementById("bRom").style.width = S.rom + "%";
+
+  document.getElementById("rCpu").textContent = S.cpu;
+  document.getElementById("rRam").textContent = S.ram;
+  document.getElementById("rGpu").textContent = S.gpu;
+  document.getElementById("rRom").textContent = S.rom;
+  document.getElementById("rTotal").textContent = S.cpu + S.ram + S.gpu + S.rom;
+  document.getElementById("rDurchsatz").textContent = S.durchsatz;
+  document.getElementById("rReserve").textContent = S.reserve;
+  document.getElementById("rWert").textContent = S.wert;
+
+  document.getElementById("topCpu").textContent = S.cpu;
+  document.getElementById("topRam").textContent = S.ram;
+  document.getElementById("topGpu").textContent = S.gpu;
+  document.getElementById("topRom").textContent = S.rom;
+  document.getElementById("stageWert").textContent = S.wert;
+
+  // Status
+  const c = S.confirm.filter(Boolean).length;
+  document.getElementById("confirmCount").textContent = c + "/3";
+  if (c === 3) {
+    document.getElementById("romState").textContent = "freigegeben";
+    document.getElementById("stageStatus").textContent = "✓ freigegeben";
+  } else if (c > 0) {
+    document.getElementById("romState").textContent = "teilweise";
+    document.getElementById("stageStatus").textContent = "teilweise";
+  } else {
+    document.getElementById("romState").textContent = "gesperrt";
+    document.getElementById("stageStatus").textContent = "gesperrt";
+  }
+}
+
+/* ─── 3FACH-BESTÄTIGUNG ──────────────────────────────────── */
+function buildConfirm() {
+  const el = document.getElementById("confirmBox");
+  el.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement("div");
+    d.className = "confirm" + (S.confirm[i] ? " on" : "");
+    d.dataset.i = i;
+    d.innerHTML = `<span class="n">${i + 1}</span>OK`;
+    d.onclick = () => {
+      S.confirm[i] = !S.confirm[i];
+      d.classList.toggle("on", S.confirm[i]);
+      updateUI();
+      log(`◈ bestätigung ${i + 1} · ${S.confirm[i] ? "OK" : "zurück"}`, S.confirm[i] ? "ok" : "warn");
+    };
+    el.appendChild(d);
+  }
+}
+
+/* ─── CANVAS ─────────────────────────────────────────────── */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let W, H;
+
+function resize() {
+  const stage = document.getElementById("stage");
+  const r = stage.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = r.width; H = r.height;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener("resize", () => { resize(); });
+
+function renderScene() {
+  const t = S.tick;
+  const cx = W / 2, cy = H / 2;
+
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  // Sternenstaub
+  for (let i = 0; i < 40; i++) {
+    const x = (i * 137) % W;
+    const y = (i * 91) % H;
+    const a = 0.04 + Math.sin(t * 0.02 + i) * 0.03;
+    ctx.fillStyle = `rgba(179,136,255,${a})`;
+    ctx.fillRect(x, y, 1, 1);
+  }
+
+  // Vier Achsen als Ringe
+  const R0 = Math.min(W, H) * 0.35;
+  const vals = [S.cpu, S.ram, S.gpu, S.rom];
+  const colors = ["#ff8a2a", "#39ff88", "#ff3ea5", "#f0d080"];
+  const labels = ["CPU", "RAM", "GPU", "ROM"];
+
+  vals.forEach((v, i) => {
+    const r = R0 * (0.4 + i * 0.2);
+    const arc = (v / 100) * Math.PI * 2;
+    ctx.strokeStyle = colors[i];
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + arc);
+    ctx.stroke();
+
+    ctx.strokeStyle = colors[i] + "33";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = colors[i];
+    ctx.font = "10px monospace";
+    ctx.textAlign = "left";
+    ctx.fillText(labels[i] + " " + v, cx + r + 8, cy - r + 4);
+  });
+
+  // Zentrum: Wert
+  const pulse = 0.6 + Math.sin(t * 0.08) * 0.4;
+  ctx.fillStyle = `rgba(240,208,128,${pulse})`;
+  ctx.shadowColor = "#f0d080";
+  ctx.shadowBlur = 25 * pulse;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 12 + Math.sin(t * 0.1) * 3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = "#f0d080";
+  ctx.font = "bold 18px monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(S.wert, cx, cy);
+
+  ctx.font = "9px monospace";
+  ctx.fillStyle = "#8878a8";
+  ctx.fillText("WERT", cx, cy + 22);
+
+  // 80/20 Anzeige
+  if (S.wert > 0) {
+    ctx.fillStyle = "#5cf0ff";
+    ctx.font = "11px monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("DURCHSATZ " + S.durchsatz + "  ·  RESERVE " + S.reserve, cx, H - 40);
+  }
+
+  S.tick++;
+  requestAnimationFrame(renderScene);
+}
+
+/* ─── BUTTONS ────────────────────────────────────────────── */
+document.getElementById("btnBench").addEventListener("click", bench);
+document.getElementById("btnReset").addEventListener("click", () => {
+  S.cpu = S.ram = S.gpu = S.rom = S.durchsatz = S.reserve = S.wert = 0;
+  S.confirm = [false, false, false];
+  document.querySelectorAll(".confirm").forEach(el => el.classList.remove("on"));
+  updateUI();
+  log("⟲ reset · alles auf 0", "warn");
+});
+
+/* ─── CLOCK ──────────────────────────────────────────────── */
+setInterval(() => {
+  document.getElementById("clock").textContent =
+    new Date().toLocaleTimeString("de-DE");
+}, 1000);
+
+/* ─── INIT ───────────────────────────────────────────────── */
+resize();
+buildConfirm();
+updateUI();
+log("◈ ROM · WERT-PRÜFSTAND geladen", "ok");
+log("  Klick BENCH um zu messen.", "info");
+log("  Nur was wirklich ankommt, zählt.", "warn");
+log("© iki1uc", "");
+
+renderScene();
+
+/* Public API */
+window.ROM = {
+  bench: bench,
+  state: () => ({ cpu: S.cpu, ram: S.ram, gpu: S.gpu, rom: S.rom,
+    durchsatz: S.durchsatz, reserve: S.reserve, wert: S.wert,
+    confirm: [...S.confirm] }),
+  confirm: (i) => { S.confirm[i] = !S.confirm[i]; buildConfirm(); updateUI(); }
+};
+</script>
+</body>
+</html>
