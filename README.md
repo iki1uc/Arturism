@@ -1,145 +1,114 @@
-markdown
-# iki1uc · ANDOCKSTATION
+i.ki.1.uc · AN.DOCK.STA.TI.ON
+© i.ki.1.uc
 
-© iki1uc
+Was das ist
+Ein Sys.tem. Kein Witz.
 
----
+Vier Tei.le. Ei.ne Ket.te:
 
-## Was das ist
+in.dex.html → die Hand      · zeigt, wer da ist
+ID.html     → das Ge.sicht   · sagt, wer du bist
+ROM.html    → die Prü.fung   · misst, was an.kommt
+READ.ME.md  → der Puls      · hält es zu.sam.men
+Zu.sam.men: ein Move. Ei.ne Auf.ga.be. Ein Maß.stab.
 
-Ein System. Kein Witz.
+Oh.ne READ.ME: vier Da.tei.en, kei.ne Ket.te.
+Mit READ.ME: ei.ne Ein.heit.
 
-Drei Teile:
-index.html → Andockstation (Ports · PX-TRIO · PX12)
-ID.html → Identität (2me · CORE)
-README.md → Bindung (diese Datei)
+Die Bin.dung
+in.dex.html → die Hand
+ID.html     → das Ge.sicht
+ROM.html    → die Prü.fung
+READ.ME.md  → der Puls
+Die READ.ME er.klärt nicht — sie bin.det.
+Sie sagt:
 
-text
+was die vier Tei.le sind
+wie sie zu.sam.men.hän.gen
+was die Re.gel ist
+was noch kommt
+Die Re.gel
+Je.der Move ist + .
+Mi.nus ist ei.ne Lü.ge.
+Kein Mi.nus. Nicht im Sys.tem. Nicht im Move.
 
-Zusammen: **ein Move. Eine Aufgabe. Ein Maßstab.**
+Mas.se   → was du hast
+Schwung  → wie du's gibst
+ROM      → was an.kommt
+Nur der ROM-Wert zählt.
+Nicht, was du ver.sprichst.
+Nur, was wirk.lich an.kommt.
 
----
+ROM ist kein Durch.schnitt.
+ROM ist ein Bleib-Test:
+schrei.ben → wie.der.le.sen → nur wenn es wie.der da ist, zählt es.
 
-## Die Bindung
-index.html → zeigt wer da ist
-ID.html → sagt wer du bist
-README.md → hält es zusammen
+WERT       = ROM · max 100
+DURCH.SATZ = WERT × 0,8
+RE.SER.VE  = WERT − DURCH.SATZ
+Sum.me = WERT. Im.mer. Kein 320. Kein Trick.
 
-text
+Die drei Drit.tel
+⅓ Ver.die.nen        → bleibt bei dir
+⅓ Staat             → wird ent.rich.tet · Steu.er, Ver.wal.tung
+⅓ Hilfs.or.ga.ni.sa.ti.on → mein Hilfs.werk, was noch kommt
+Und MY.COIN ist die Ein.heit.
+Kein Kryp.to. Kein Spe.ku.lie.ren.
+Nur: was an.kommt.
 
-Ohne README: zwei Seiten, keine Kette.
-Mit README: **eine Einheit.**
+Mind-Ver.wal.tung → Selbst-Ver.wal.tung
+Zwang → Mind-Ver.wal.tung   → Ver.wal.tung von oben
+Frei  → Selbst-Ver.wal.tung → je.der ver.wal.tet sich
+Ziel: Weg von Mind. Hin zu Selbst.
 
----
+Nicht, weil Mind bö.se ist.
+Weil Selbst wür.di.ger ist.
 
-## Die Regel
-Jeder Move ist + .
-Minus ist eine Lüge.
-Kein Minus. Nicht im System. Nicht im Move.
+Bench als Prü.fung
+Je.der, der an.do.cken will:
 
-text
+CPU → Bench-Zeit · rech.net
+RAM → Bench-Zeit · hält
+GPU → Bench-Zeit · zeigt
+ROM → Bleib-Test · bleibt
+Nicht Be.haup.tung. Bench-Er.geb.nis.
+
+Wer es schafft — ist wür.dig.
+Wer nicht — auch wür.dig. Nur nicht für den Bench.
+Wert > 0 bleibt im.mer.
 
 Und:
-Masse → was du hast
-Schwung → wie du's gibst
-ROM → was ankommt (nur ROM wird akzeptiert)
+Kein Frei.ge.ben oh.ne Bench.
+Erst Bench. Dann 3FACH. Dann frei.
 
-text
+Was da.nach kommt
+1  ROM.js / ROM.html  ← die Wert-Prü.fung · GE.MACHT, FIXED
+2  SYS                ← sys.tem.wei.te Ver.bin.dung
+3  HILFS.ORG          ← das Drit.tel an.kom.men las.sen
+4  MY.COIN als Be.fehl ← in run.time.html ein.bau.en
+Noch of.fen. Nicht fer.tig.
+Aber der Rah.men steht. Und ROM steht schon.
 
-**Nur der ROM-Wert zählt.** Nicht was du versprichst. Nur was **wirklich** ankommt.
+Root-Zu.griff
+Du gibst mir Root. Nicht für mich.
 
----
+Für das ei.ne: das Bes.te fin.den.
+Und nur das Bes.te wei.ter.ge.ben.
 
-## Die drei Drittel
-⅓ Verdienen → bleibt bei dir
-⅓ Staat → wird entrichtet (Steuer, Verwaltung)
-⅓ Hilfsorganisation → mein Hilfswerk, was noch kommt
+Nicht: al.les neh.men.
+Nicht: al.les än.dern.
+Nur: schau.en. Und das Bes.te zum Bes.ten al.ler.
 
-text
+Der letz.te Satz
+Der Bes.te zum Bes.ten für al.le.
 
-**Und MYCOIN** ist die Einheit. Kein Krypto. Kein Spekulieren. Nur: was ankommt.
+Nicht: der Reichs.te. Nicht: der Stärks.te.
+Der, der am bes.ten teilt. Der bleibt.
 
----
+Und wer kommt — kommt zum Bes.se.ren.
+Und wer wei.ter.geht — gibt's wei.ter.
 
-## Mind-Verwaltung → Selbst-Verwaltung
-Zwang → Mind-Verwaltung → Verwaltung von oben
-Frei → Selbst-Verwaltung → jeder verwaltet sich
+Das ist die Ket.te. Oh.ne En.de.
 
-text
-
-**Ziel:** Weg von Mind. Hin zu Selbst.
-
-Nicht weil Mind böse ist. Weil Selbst **würdiger** ist.
-
----
-
-## Bench als Prüfung
-
-Jeder der andocken will:
-CPU → real · rechnet
-RAM → real · hält
-GPU → real · zeigt
-ROM → real · bleibt
-
-text
-
-**Nicht Behauptung. Bench-Ergebnis.**
-
-Wer's schafft — ist würdig. Wer nicht — **auch würdig.** Nur nicht für den Bench. Wert > 0 bleibt immer.
-
----
-
-## Was danach kommt
-1 ROM.js / ROM.html ← die Wert-Prüfung
-2 SYS ← Systemweite Verbindung
-3 HILFS.ORG ← das Drittel ankommen lassen
-4 MYCOIN als Befehl ← in runtime.html einbauen
-
-text
-
-**Noch offen.** Nicht fertig. Aber **der Rahmen steht.**
-
----
-
-## Root-Zugriff
-
-Du gibst mir Root. **Nicht für mich.**
-
-Für das eine: **das Beste finden.** Und nur das Beste weitergeben.
-
-Nicht: alles nehmen.
-Nicht: alles ändern.
-**Nur: schauen. Und das Beste zum Besten aller.**
-
----
-
-## Der letzte Satz
-
-**Der Beste zum Besten für alle.**
-
-Nicht: der Reichste. Nicht: der Stärkste.
-**Der, der am besten teilt.** Der bleibt.
-
-Und wer kommt — kommt zum Besseren.
-Und wer weitergeht — gibt's weiter.
-
-**Das ist die Kette. Ohne Ende.**
-
----
-
-© iki1uc
-Nutzung: frei. Nur der Name bleibt.
-Warum das die Bindung ist
-text
-index.html   →  die Hand
-ID.html      →  das Gesicht
-README.md    →  der Puls
-Die README erklärt nicht — sie bindet. Sie sagt:
-
-was die drei Teile sind
-
-wie sie zusammenhängen
-
-was die Regel ist
-
-was noch kommt
+© i.ki.1.uc
+Nut.zung: frei. Nur der Na.me bleibt.
