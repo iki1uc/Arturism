@@ -1,5 +1,7 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ROM · WERT-PRÜFSTAND · i.ki.1.uc · FIXED</title>
+<!DOCTYPE html>
+<!-- KETTE: in.dex.html (Hand) · ID.html (Ge.sicht) · rom.html (Prü.fung) · READ.ME.md (Puls) · Re.gel: Je.der Move ist + · Nur ROM zählt · i.ki.1.uc -->
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROM · WERT-PRÜFSTAND · i.ki.1.uc · NORMAL</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;background:#000;color:#c8d8e8;font-family:Consolas,monospace;font-size:13px;overflow:hidden}
 #rom{display:grid;grid-template-rows:32px 1fr 24px;height:100%}
 #top{background:#1a0a2a;color:#b388ff;display:flex;align-items:center;padding:0 14px;font-size:11px;letter-spacing:2px;gap:14px;border-bottom:1px solid #3a1a5a}
@@ -25,7 +27,7 @@
 #bottom{background:#1a0a2a;color:#8878a8;font-size:10.5px;padding:0 14px;display:flex;align-items:center;gap:16px;border-top:1px solid #3a1a5a}
 #bottom b{color:#f0d080}.log-line{padding:2px 0;font-size:10.5px;display:flex;gap:6px}.log-line .t{color:#4a3a5a;flex-shrink:0}.log-line .m{flex:1;word-break:break-word}
 .log-line.ok .m{color:#0f0}.log-line.warn .m{color:#f0d080}.log-line.err .m{color:#f55}.log-line.info .m{color:#b388ff}</style></head><body>
-<div id="rom"><div id="top"><span>◈ <b>ROM</b> · WERT-PRÜFSTAND · FIXED</span><span class="right"><span>CPU <b id="topCpu">—</b></span><span>RAM <b id="topRam">—</b></span><span>GPU <b id="topGpu">—</b></span><span>ROM <b id="topRom">—</b></span><span id="clock">--:--:--</span></span></div>
+<div id="rom"><div id="top"><span>◈ <b>ROM</b> · WERT-PRÜFSTAND · NORMAL</span><span class="right"><span>CPU <b id="topCpu">—</b></span><span>RAM <b id="topRam">—</b></span><span>GPU <b id="topGpu">—</b></span><span>ROM <b id="topRom">—</b></span><span id="clock">--:--:--</span></span></div>
 <div id="main"><div class="col"><h2><span>◈ MESSWERTE · BENCH-ZEIT, NICHT ECHTE HARDWARE</span><b id="messState">bereit</b></h2><div class="body">
 <div class="meter"><div class="k">CPU · BENCH-ZEIT (Primzahlen)</div><div class="v cpu" id="vCpu">0</div><div class="bar"><i id="bCpu" style="width:0%;background:#ff8a2a"></i></div></div>
 <div class="meter"><div class="k">RAM · BENCH-ZEIT (Array)</div><div class="v ram" id="vRam">0</div><div class="bar"><i id="bRam" style="width:0%;background:#39ff88"></i></div></div>
@@ -110,7 +112,7 @@ try{localStorage.removeItem(KEY);}catch(e){} // FIX: Reset löscht auch den ROM-
 buildConfirm();updateUI();log("⟲ reset · alles auf 0 · ROM-Beweis gelöscht","warn");});
 setInterval(()=>{document.getElementById("clock").textContent=new Date().toLocaleTimeString("de-DE");},1000);
 resize();buildConfirm();updateUI();
-log("◈ ROM · WERT-PRÜFSTAND geladen (FIXED)","ok");log("  Klick BENCH um zu messen.","info");log("  ROM = Rücklese-Test. Nur was wirklich ankommt, zählt.","warn");log("© i.ki.1.uc","");
+log("◈ ROM · WERT-PRÜFSTAND geladen (NORMAL)","ok");log("  Klick BENCH um zu messen.","info");log("  ROM = Rücklese-Test. Nur was wirklich ankommt, zählt.","warn");log("© i.ki.1.uc","");
 renderScene();
 window.ROM={bench:bench,state:()=>({cpu:S.cpu,ram:S.ram,gpu:S.gpu,rom:S.rom,durchsatz:S.durchsatz,reserve:S.reserve,wert:S.wert,confirm:[...S.confirm],benched:S.benched}),
-confirm:(i)=>{if(!S.benched)return;S.confirm[i]=!S.confirm[i];buildConfirm();updateUI();}};</script></body></html>
+confirm:(i)=>{if(!S.benched)return;S.confirm[i]=!S.confirm[i];buildConfirm();updateUI();}};</script><div id="arturism-kette" style="display:flex;gap:12px;flex-wrap:wrap;padding:6px 14px;font-size:10px;background:#0a0a12;border-top:1px solid #1a2a3a"><a href="index.html" style="color:#ff8ab0">in.dex.html · Hand</a><a href="ID.html" style="color:#b388ff">ID.html · Ge.sicht</a><a href="rom.html" style="color:#f0d080">rom.html · Prü.fung</a><a href="README.md" style="color:#5cf0ff">READ.ME.md · Puls</a><span style="margin-left:auto;color:#8878a8">i.ki.1.uc · Je.der Move ist + · Nur ROM zählt</span></div></body></html>
