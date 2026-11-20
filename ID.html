@@ -1,5 +1,7 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ID · 2.me · i.ki.1.uc · FIXED — Identität + Andocken mit echter Prüfung</title>
+<!DOCTYPE html>
+<!-- KETTE: in.dex.html (Hand) · ID.html (Ge.sicht) · rom.html (Prü.fung) · READ.ME.md (Puls) · Re.gel: Je.der Move ist + · Nur ROM zählt · i.ki.1.uc -->
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ID · 2.me · i.ki.1.uc · NORMAL — Identität + Andocken mit echter Prüfung</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;background:#000;color:#c8d8e8;font-family:Consolas,monospace;font-size:13px;overflow:hidden}
 #dock{display:grid;grid-template-rows:32px 1fr 24px;height:100%}
 #top{background:#1a0a2a;color:#b388ff;display:flex;align-items:center;padding:0 14px;font-size:11px;letter-spacing:2px;gap:14px;border-bottom:1px solid #3a1a5a}
@@ -23,11 +25,11 @@
 .log-line.ok .m{color:#0f0}.log-line.warn .m{color:#f0d080}.log-line.err .m{color:#f55}.log-line.info .m{color:#b388ff}
 #bottom{background:#1a0a2a;color:#8878a8;font-size:10.5px;padding:0 14px;display:flex;align-items:center;gap:16px;border-top:1px solid #3a1a5a}
 #bottom b{color:#f0d080}.btn{margin:6px;background:#0a0a12;color:#5cf0ff;border:1px solid #1a2a3a;padding:6px 10px;border-radius:3px;font-family:inherit;font-size:10px;cursor:pointer}</style></head><body>
-<div id="dock"><div id="top"><span>◈ <b>ID</b> · 2.me · i.ki.1.uc · FIXED</span><span class="right"><span>ID <b>2.me</b></span><span>MODE <b>RAW</b></span><span>PORTS <b id="topPorts">0/3</b></span><span id="clock">--:--:--</span></span></div>
+<div id="dock"><div id="top"><span>◈ <b>ID</b> · 2.me · i.ki.1.uc · NORMAL</span><span class="right"><span>ID <b>2.me</b></span><span>MODE <b>RAW</b></span><span>PORTS <b id="topPorts">0/3</b></span><span id="clock">--:--:--</span></span></div>
 <div id="main"><div class="col"><h2><span>◈ IDENTITÄT</span><b>2.me</b></h2><div class="body">
 <div class="id-block"><div class="k">ID</div><div class="v">2.me</div></div>
 <div class="id-block"><div class="k">CORE</div><div class="v">i.ki.1.uc</div></div>
-<div class="id-block"><div class="k">VERSION</div><div class="v">1.0 · FIXED</div></div>
+<div class="id-block"><div class="k">VERSION</div><div class="v">1.0 · NORMAL</div></div>
 <div class="id-block"><div class="k">MODE</div><div class="v">RAW</div></div>
 <div class="id-block" style="border-left-color:#f0d080"><div class="k">MIR.ROR-ROOT</div><div class="v" style="color:#f0d080">PX-TRI.O</div><div class="d">PX3 + PX6 + PX9 — 3 Stufen, keine Summe</div></div>
 <div class="id-block" style="border-left-color:#f0d080"><div class="k">FUSION</div><div class="v" style="color:#f0d080">PX12</div><div class="d">PX12 ist ein Codename für die Fusion, KEINE Summe. 3+6+9 = 18. Wer 12 als Summe liest, liest falsch.</div></div>
@@ -49,7 +51,7 @@
 <div class="panel"><div class="row"><span class="k">PX-TRI.O</span><span class="v">3 · 6 · 9 (Stufen)</span></div><div class="row"><span class="k">PX-FU.SI.ON</span><span class="v">PX12 = Codename, nicht 18</span></div><div class="row"><span class="k">PX-ACH.SE</span><span class="v">PX4</span></div></div>
 <div class="panel"><div class="row"><span class="k">ID.html</span><span class="v" id="stId">diese Datei</span></div><div class="row"><span class="k">uROOM.html</span><span class="v" id="stUroom">nicht geprüft</span></div><div class="row"><span class="k">HDF.html</span><span class="v" id="stHdf">nicht geprüft</span></div></div>
 <h2><span>◈ LOG</span><b id="logCount">0</b></h2><div class="body" id="log" style="flex:1"></div></div></div>
-<div id="bottom"><span>◈ ID · 2.me · i.ki.1.uc</span><span><b>PX-TRI.O</b> · PX3 + PX6 + PX9 → PX12 (Codename)</span><span style="margin-left:auto">© i.ki.1.uc · FIXED: href wird benutzt, Status wird per fetch gemessen, Ringe hängen an Ports</span></div></div>
+<div id="bottom"><span>◈ ID · 2.me · i.ki.1.uc</span><span><b>PX-TRI.O</b> · PX3 + PX6 + PX9 → PX12 (Codename)</span><span style="margin-left:auto">© i.ki.1.uc · NORMAL: href wird benutzt, Status wird per fetch gemessen, Ringe hängen an Ports</span></div></div>
 <script>"use strict";
 const S={ports:{
 id:{on:true,label:"ID.html",desc:"Identität · 2.me",href:"ID.html",ring:"3",exists:true},
@@ -111,6 +113,6 @@ if(n>=2){ctx.strokeStyle="rgba(179,136,255,0.4)";ctx.lineWidth=1;ctx.setLineDash
 S.tick++;requestAnimationFrame(renderScene);}
 setInterval(()=>{document.getElementById("clock").textContent=new Date().toLocaleTimeString("de-DE");},1000);
 resize();buildPorts();updateStatus();
-log("◈ ID geladen (FIXED)","ok");log("  ID · 2.me · CORE · i.ki.1.uc","info");log("  PX-TRI.O · 3 · 6 · 9 Stufen → PX12 = Codename, nicht Summe","info");log("  PORTS · Klick = erst fetch-prüfen, dann öffnen","info");log("© i.ki.1.uc","");log("  PORTS PRÜFEN klicken, dann andocken","warn");
+log("◈ ID geladen (NORMAL)","ok");log("  ID · 2.me · CORE · i.ki.1.uc","info");log("  PX-TRI.O · 3 · 6 · 9 Stufen → PX12 = Codename, nicht Summe","info");log("  PORTS · Klick = erst fetch-prüfen, dann öffnen","info");log("© i.ki.1.uc","");log("  PORTS PRÜFEN klicken, dann andocken","warn");
 renderScene();
-window.ANDOCK={ports:S.ports,toggle:togglePort,check:checkPorts,state:()=>({ports:Object.entries(S.ports).map(([k,v])=>({key:k,on:v.on,exists:v.exists})),connected:Object.values(S.ports).filter(p=>p.on).length})};</script></body></html>
+window.ANDOCK={ports:S.ports,toggle:togglePort,check:checkPorts,state:()=>({ports:Object.entries(S.ports).map(([k,v])=>({key:k,on:v.on,exists:v.exists})),connected:Object.values(S.ports).filter(p=>p.on).length})};</script><div id="arturism-kette" style="display:flex;gap:12px;flex-wrap:wrap;padding:6px 14px;font-size:10px;background:#0a0a12;border-top:1px solid #1a2a3a"><a href="index.html" style="color:#ff8ab0">in.dex.html · Hand</a><a href="ID.html" style="color:#b388ff">ID.html · Ge.sicht</a><a href="rom.html" style="color:#f0d080">rom.html · Prü.fung</a><a href="README.md" style="color:#5cf0ff">READ.ME.md · Puls</a><span style="margin-left:auto;color:#8878a8">i.ki.1.uc · Je.der Move ist + · Nur ROM zählt</span></div></body></html>
