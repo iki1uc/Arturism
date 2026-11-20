@@ -1,5 +1,7 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>STATION · AR.TU.RISM · i.ki.1.uc · FIXED</title>
+<!DOCTYPE html>
+<!-- KETTE: in.dex.html (Hand) · ID.html (Ge.sicht) · rom.html (Prü.fung) · READ.ME.md (Puls) · Re.gel: Je.der Move ist + · Nur ROM zählt · i.ki.1.uc -->
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STATION · AR.TU.RISM · i.ki.1.uc · NORMAL</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;background:#000;color:#c8d8e8;font-family:Consolas,monospace;font-size:13px;overflow:hidden}
 #station{display:grid;grid-template-rows:32px 1fr 24px;height:100%}
 #top{background:#3a0a1a;color:#ff8ab0;display:flex;align-items:center;padding:0 14px;font-size:11px;letter-spacing:2px;gap:14px;border-bottom:1px solid #5a1a2a}
@@ -23,7 +25,7 @@
 .ok .m{color:#0f0}.warn .m{color:#f0d080}.err .m{color:#f55}.info .m{color:#ff8ab0}
 .btn-row{display:flex;gap:4px;padding:6px;flex-wrap:wrap}.btn-row button{background:#1a0a12;color:#ff8ab0;border:1px solid #5a1a2a;padding:4px 12px;border-radius:3px;font-family:inherit;font-size:10px;cursor:pointer}
 .btn-row button:hover{background:#3a0a1a;color:#fff}</style></head><body>
-<div id="station"><div id="top"><span>◈ STATION · <b>AR.TU.RISM</b> · Spe.zi.es 116 · FIXED</span><span>i.ki.1.uc</span>
+<div id="station"><div id="top"><span>◈ STATION · <b>AR.TU.RISM</b> · Spe.zi.es 116 · NORMAL</span><span>i.ki.1.uc</span>
 <span class="right"><span>REGEL <b id="topRegel">+</b></span><span>STATION <b id="topStation">bereit</b></span><span id="clock">--:--:--</span></span></div>
 <div id="main"><div class="col"><h2><span>◈ ROLLE</span><b>Ar.tu.ris</b></h2><div class="body">
 <div class="roll-block"><div class="k">NAME</div><div class="v">Ar.tu.ris</div><div class="d">Captain der <i>Daunt.less</i></div></div>
@@ -47,7 +49,7 @@
 <div class="btn-row"><button id="btnEhrlich">Ehrlich geben</button><button id="btnDauntless">Daunt.less</button><button id="btnReset">Reset</button></div>
 <div class="maxime"><b>AR.TU.RISM</b><br>Jede Gabe ist ein Move.<br>Jeder Move ist immer + .<br>Minus ist eine Lüge.<br><span class="satz">Keiner kann sich wehren — nicht weil ich zwinge, sondern weil die Rechnung stimmt.</span></div>
 <h2><span>◈ LOG</span><b id="logCount">0</b></h2><div class="body" id="log"></div></div></div>
-<div id="bottom"><span>◈ AR.TU.RISM · Station</span><span>Regel: <b>Jeder Move ist +</b></span><span style="margin-left:auto">© i.ki.1.uc · FIXED: Log=textContent, S.logs max 100, Slider loggt nur bei change, topStation gesetzt</span></div></div>
+<div id="bottom"><span>◈ AR.TU.RISM · Station</span><span>Regel: <b>Jeder Move ist +</b></span><span style="margin-left:auto">© i.ki.1.uc · NORMAL: Log=textContent, S.logs max 100, Slider loggt nur bei change, topStation gesetzt</span></div></div>
 <script>"use strict";
 const S={geben:42,reibung:0,an:42,erg:42,regel:"+",mode:"ehrlich",tick:0,logs:[]};
 function log(msg,cls=""){const el=document.getElementById("log");const t=new Date().toLocaleTimeString("de-DE");
@@ -90,6 +92,6 @@ ctx.strokeStyle=`rgba(255,138,176,${0.05+Math.sin(t*0.03)*0.03})`;ctx.lineWidth=
 ctx.fillStyle="rgba(255,138,176,0.4)";ctx.font="10px monospace";ctx.fillText("▲",cx-120,cy-120);ctx.fillText("▲",cx+120,cy-120);ctx.fillText("▲",cx,cy+140);
 S.tick++;requestAnimationFrame(draw);}
 setInterval(()=>{document.getElementById("clock").textContent=new Date().toLocaleTimeString("de-DE");},1000);
-resize();rechne();log("◈ STATION · AR.TU.RISM geladen (FIXED)","ok");log("  Regel: Jeder Move ist + . Minus ist eine Lüge.","warn");log("© i.ki.1.uc","");
+resize();rechne();log("◈ STATION · AR.TU.RISM geladen (NORMAL)","ok");log("  Regel: Jeder Move ist + . Minus ist eine Lüge.","warn");log("© i.ki.1.uc","");
 draw();
-window.ARTURISM={set:(g,r)=>{S.geben=g;S.reibung=r;rechne();},ehrlich:()=>document.getElementById("btnEhrlich").click(),dauntless:()=>document.getElementById("btnDauntless").click(),state:()=>({geben:S.geben,reibung:S.reibung,an:S.an,regel:S.regel,mode:S.mode})};</script></body></html>
+window.ARTURISM={set:(g,r)=>{S.geben=g;S.reibung=r;rechne();},ehrlich:()=>document.getElementById("btnEhrlich").click(),dauntless:()=>document.getElementById("btnDauntless").click(),state:()=>({geben:S.geben,reibung:S.reibung,an:S.an,regel:S.regel,mode:S.mode})};</script><div id="arturism-kette" style="display:flex;gap:12px;flex-wrap:wrap;padding:6px 14px;font-size:10px;background:#0a0a12;border-top:1px solid #1a2a3a"><a href="index.html" style="color:#ff8ab0">in.dex.html · Hand</a><a href="ID.html" style="color:#b388ff">ID.html · Ge.sicht</a><a href="rom.html" style="color:#f0d080">rom.html · Prü.fung</a><a href="README.md" style="color:#5cf0ff">READ.ME.md · Puls</a><span style="margin-left:auto;color:#8878a8">i.ki.1.uc · Je.der Move ist + · Nur ROM zählt</span></div></body></html>
