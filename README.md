@@ -82,7 +82,7 @@ Kein Frei.ge.ben oh.ne Bench.
 Erst Bench. Dann 3FACH. Dann frei.
 
 Was da.nach kommt
-1  ROM.js / ROM.html  ← die Wert-Prü.fung · GE.MACHT, FIXED
+1  ROM.js / ROM.html  ← die Wert-Prü.fung · GE.MACHT · NORMAL
 2  SYS                ← sys.tem.wei.te Ver.bin.dung
 3  HILFS.ORG          ← das Drit.tel an.kom.men las.sen
 4  MY.COIN als Be.fehl ← in run.time.html ein.bau.en
