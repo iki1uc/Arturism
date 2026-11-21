@@ -1,27 +1,12 @@
-CPU → Bench-Zeit · rechnet
-RAM → Bench-Zeit · hält
-GPU → Bench-Zeit · zeigt
-ROM → Bleib-Test · bleibt
-Nicht Behauptung. Bench-Ergebnis.
-Zwang → Mind-Verwaltung → Verwaltung von oben
-Frei → Selbst-Verwaltung → jeder verwaltet sich
-Ziel: Weg von Mind. Hin zu Selbst.
-Nicht, weil Mind böse ist. Weil Selbst würdiger ist.
-⅓ Verdienen → bleibt bei dir
-⅓ Staat → wird entrichtet · Steuer, Verwaltung
-⅓ Hilfsorganisation → mein Hilfswerk, was noch kommt
-WERT = ROM · max 100
-DURCHSATZ = WERT × 0,8
-RESERVE = WERT − DURCHSATZ
-Summe = WERT. Immer. Kein 320. Kein Trick.
-Masse → was du hast
-Schwung → wie du's gibst
-ROM → was ankommt
-Nur ROM zählt. Nicht, was du versprichst. Nur, was wirklich ankommt.
-index.html → die Hand · zeigt, wer da ist
-ID.html    → das Gesicht · sagt, wer du bist
-ROM.html   → die Prüfung · misst, was ankommt
-README.md  → der Puls · hält es zusammen
+README.md = Puls
+Puls = Arturism
+Arturism = die Kunst, aus vier Teilen eine Einheit zu machen
+
+Nicht: vier Dateien.
+Sondern: ein Move. Eine Aufgabe. Ein Maßstab.
+Nicht: Text.
+Sondern: Kunst, die bindet.
+
 LICENSE
 NC · iki1uc · Eye Brain Open
 Copyright (c) 2026 iki1uc — Alle Rechte vorbehalten.
