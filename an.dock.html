@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>i.ki.1.uc · FOUNDER BUILD · AN.DOCK.STA.TI.ON</title>
+<style>body{margin:0;background:#050505;color:#f5f5f5;font:16px/1.6 system-ui,sans-serif;padding:0 0 2rem}
+header{padding:20px 14px;border-bottom:2px solid #00ff66;text-align:center}h1{margin:0;color:#00ff66;letter-spacing:2px;font-size:20px}
+main{max-width:720px;margin:auto;padding:14px}.card{background:#111;border:1px solid #333;border-radius:12px;padding:16px;margin:0 0 12px}
+h2{margin:0 0 8px;color:#ffd166;font-size:16px}.muted{color:#999}.out{background:#000;border:1px solid #333;border-radius:8px;padding:12px;white-space:pre-wrap}
+.row{display:flex;gap:8px;flex-wrap:wrap}button{font:inherit;background:#0b0b0b;color:#fff;border:1px solid #444;border-radius:8px;padding:10px 12px;cursor:pointer}button:hover{border-color:#00ff66}
+input{font:inherit;background:#000;color:#fff;border:1px solid #444;border-radius:8px;padding:10px;width:100px}
+footer{text-align:center;color:#999;font-size:12px;padding:14px;border-top:1px solid #333}</style></head>
+<body><header><h1>i.ki.1.uc · FOUNDER BUILD</h1><div class="muted">AN.DOCK.STA.TI.ON · Nur was du gebrauchen kannst · Nur was du vermitteln kannst · Zivilisatorisch korrekt · Human</div></header>
+<main>
+<div class="card"><h2>1 · AN.DOCK — Vier Teile, eine Kette</h2><div class="out">index.html → die Hand · zeigt, wer da ist
+ID.html → das Gesicht · sagt, wer du bist
+ROM.html → die Prüfung · misst, was ankommt
+README.md → der Puls · hält es zusammen
+Ohne README: vier Dateien, keine Kette. Mit README: eine Einheit.</div></div>
+<div class="card"><h2>2 · ROM — Nur was ankommt zählt</h2><div class="out">Masse → was du hast
+Schwung → wie du's gibst
+ROM → was ankommt
+Nur ROM zählt. Nicht, was du versprichst. Nur, was wirklich ankommt.
+ROM ist kein Durchschnitt. ROM ist ein Bleib-Test: schreiben → wiederlesen → nur wenn es wieder da ist, zählt es.</div>
+<div class="row" style="margin-top:10px"><label>ROM (0-100) <input id="rom" type="number" value="80" min="0" max="100"></label><button id="go">Rechnen</button></div><div id="romOut" class="out" style="margin-top:10px">Noch nicht gerechnet.</div></div>
+<div class="card"><h2>3 · Drei Drittel — Zivilisatorisch korrekt, human</h2><div class="out">⅓ Verdienen → bleibt bei dir
+⅓ Staat → wird entrichtet · Steuer, Verwaltung
+⅓ Hilfsorganisation → mein Hilfswerk, was noch kommt
+MY.COIN ist die Einheit. Kein Krypto. Kein Spekulieren. Nur: was ankommt.</div></div>
+<div class="card"><h2>4 · Mind → Selbst — Human</h2><div class="out">Zwang → Mind-Verwaltung → Verwaltung von oben
+Frei → Selbst-Verwaltung → jeder verwaltet sich
+Ziel: Weg von Mind. Hin zu Selbst.
+Nicht, weil Mind böse ist. Weil Selbst würdiger ist.</div></div>
+<div class="card"><h2>5 · Bench — Nicht Behauptung. Bench-Ergebnis.</h2><div class="out">CPU → Bench-Zeit · rechnet
+RAM → Bench-Zeit · hält
+GPU → Bench-Zeit · zeigt
+ROM → Bleib-Test · bleibt
+Wer es schafft — ist würdig. Wer nicht — auch würdig. Nur nicht für den Bench. Wert &gt; 0 bleibt immer.
+Kein Freigeben ohne Bench. Erst Bench. Dann 3FACH. Dann frei.</div></div>
+<div class="card"><h2>6 · Founder-Regel</h2><div class="out">Jeder Move ist +. Minus ist eine Lüge. Kein Minus.
+Der Beste zum Besten für alle.
+Nicht: der Reichste. Nicht: der Stärkste. Der, der am besten teilt. Der bleibt.
+Und wer kommt — kommt zum Besseren. Und wer weitergeht — gibt's weiter.
+Das ist die Kette. Ohne Ende.</div></div>
+<div class="card"><h2>LICENSE</h2><div class="out">NC · iki1uc · Eye Brain Open
+Copyright (c) 2026 iki1uc — Alle Rechte vorbehalten.
+dis.cord open = 1.e4 e5 2.Lc4 Sc6 3.Dh5 Sf6 4.Dxf7# = nur wieimmer server und partner
+Dieses Projekt ist proprietär. Kopieren, Klonen, Forken, Verbreiten, Modifizieren oder kommerzielles Nutzen ohne schriftliche Erlaubnis verboten.
+Nur Autor iki1uc darf verwenden, verbreiten, erweitern. Externe Nutzung nur mit expliziter Business-Lizenz.
+Eye Brain Open · SAM führt · DEEP macht · PC befiehlt · PQ erinnert
+Discord: wie immer · offen · Team: open
+HALT = ZIEL · SEEK liest, ordnet, hängt an · Löscht nie</div></div>
+</main><footer>i.ki.1.uc · FOUNDER BUILD · AN.DOCK.STA.TI.ON · Zivilisatorisch korrekt · Human</footer>
+<script>
+document.getElementById('go').onclick=()=>{const r=Math.max(0,Math.min(100,Number(document.getElementById('rom').value||0)));const d=r*0.8;const res=r-d;document.getElementById('romOut').textContent=`WERT = ${r}\nDURCHSATZ = ${d.toFixed(1)} (⅓ Verdienen + ⅓ Staat + ⅓ Hilfe = ${r})\nRESERVE = ${res.toFixed(1)}\nSumme = WERT. Immer. Kein 320. Kein Trick.`;};
+</script></body></html>
