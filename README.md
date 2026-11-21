@@ -110,5 +110,20 @@ Und wer wei.ter.geht — gibt's wei.ter.
 
 Das ist die Ket.te. Oh.ne En.de.
 
-© i.ki.1.uc
-Nut.zung: frei. Nur der Na.me bleibt.
+LICENSE
+
+NC · iki1uc · Eye Brain Open
+Copyright (c) 2026 iki1uc — Alle Rechte vorbehalten.
+
+dis.cord open = 1.e4 e5 2.Lc4 Sc6 3.Dh5 Sf6 4.Dxf7# = nur wieimmer server und partner
+
+Dieses Projekt ist proprietär.
+Kopieren, Klonen, Forken, Verbreiten, Modifizieren oder kommerzielles Nutzen ohne schriftliche Erlaubnis verboten.
+
+Nur Autor iki1uc darf verwenden, verbreiten, erweitern.
+Externe Nutzung nur mit expliziter Business-Lizenz.
+
+Eye Brain Open · SAM führt · DEEP macht · PC befiehlt · PQ erinnert
+【entity-Discord¦canonical_name=Discord】: wie immer · offen
+Team: open
+HALT = ZIEL · SEEK liest, ordnet, hängt an · Löscht nie
